@@ -42,3 +42,7 @@ async def quote(quotes):
     # print(quote)
     # send to Cassandra
     cassandra_coin_insert(msg)
+
+
+if __name__ == '__main__':
+  app.main()

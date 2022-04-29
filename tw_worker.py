@@ -41,4 +41,8 @@ async def tweet(tweets):
     # print(tweet)
     # send to Cassandra
     cassandra_tweet_insert(msg)
-    
+
+
+if __name__ == '__main__':
+  app.main()
+  
