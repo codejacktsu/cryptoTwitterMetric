@@ -6,12 +6,21 @@ import uuid
 from kafka import KafkaProducer
 
 
+# Security: Extract API keys from separate file
+with open("keys.txt") as f:
+  lines = f.readlines()
+
+auth = {}
+for line in lines:
+  name, key = line.split()
+  auth[name] = key
+
 # initiate kafka
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 
 class GetQuote():
-  def __init__(self):
-    self.key = "784ea39f1aa31ca58a52302fb09629283f0fb4fdde5dddb27cd4a547f70668ac"
+  def __init__(self, key):
+    self.key = key
   
   def get_quotes(self):
     """
@@ -31,5 +40,5 @@ class GetQuote():
 
 
 # start streaming
-quote_stream = GetQuote()
+quote_stream = GetQuote(auth['coin'])
 quote_stream.stream()

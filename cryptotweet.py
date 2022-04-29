@@ -7,8 +7,14 @@ import time
 from kafka import KafkaProducer
 
 
-# Authentication APIv2
-bearer_token = "AAAAAAAAAAAAAAAAAAAAAKejbwEAAAAAmi3uP1sjOL7CbXlVAuW1ODpQbM8%3DMPjAtiV3YBqpFnaqKg9nWZWvRGK6v7sH9jQ6JjBYOzuxf7PF2k"
+# Security: Extract API keys from separate file
+with open("keys.txt") as f:
+  lines = f.readlines()
+
+auth = {}
+for line in lines:
+  name, key = line.split()
+  auth[name] = key
 
 # initialize kafka producer
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
@@ -33,7 +39,7 @@ class GetTweets(tweepy.StreamingClient):
             producer.send("twitter", value=msg.encode('utf-8'))
         return True
 
-twitter_stream = GetTweets(bearer_token=bearer_token)
+twitter_stream = GetTweets(bearer_token=auth['twitter'])
 twitter_stream.add_rules(rules, dry_run=False)
 
 
